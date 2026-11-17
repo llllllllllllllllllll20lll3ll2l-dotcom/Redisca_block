@@ -3,6 +3,8 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,3 +22,15 @@ jobs:
         with:
           name: Redisca_block-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Save APK to branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/arena/f5823909-redisca-block'
+        run: |
+          mkdir -p 'АПК'
+          cp app/build/outputs/apk/debug/app-debug.apk 'АПК/Redisca_block-debug.apk'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'АПК/Redisca_block-debug.apk'
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add Android APK [skip ci]'
+            git push origin HEAD:arena/f5823909-redisca-block
+          fi
