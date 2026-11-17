@@ -1,0 +1,14 @@
+# Small starter list, not an exhaustive ad list.
+doubleclick.net
+googleadservices.com
+googlesyndication.com
+adservice.google.com
+admob.com
+ads.youtube.com
+ads.facebook.com
+ads.twitter.com
+app-measurement.com
+applovin.com
+unityads.unity3d.com
+ads.mopub.com
+ads.yahoo.com
