@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[66,)"
+license="MIT"
+
+[[mods]]
+    modId="redisca_block"
+    version="1.0.0"
+    displayName="Redisca Block"
+    description='''
+        Removes the build height limits of every dimension (floor and ceiling)
+        in Minecraft 26.3, extending the vertical envelope from -64..319 (384
+        blocks, vanilla) to -2032..2031 (4064 blocks, the maximum vanilla-
+        representable envelope).
+
+        No blocks, items or entities are added. Nothing is limited except the
+        build limits themselves. This mod does not increase the world height
+        allowed by the game's own 12-bit packing (4064 blocks).
+    '''
+
+[[dependencies.redisca_block]]
+    modId="forge"
+    mandatory=true
+    versionRange="[66,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.redisca_block]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[26.3,)"
+    ordering="NONE"
+    side="BOTH"

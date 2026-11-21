@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[7.0.23,8.0)'
+}
+
+version = mod_version
+group = 'ru.redisca.block'
+base.archivesName = mod_id
+
+// Mojang ships Java 25 to end users in 26.1+, so this mod targets Java 25.
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+
+    runs {
+        configureEach {
+            workingDir.convention layout.projectDirectory.dir('run')
+
+            // Mixin requires either specifying the config on the command line
+            // or registering it in the JAR manifest (done below in the jar task).
+            args "--mixin.config=${mod_id}.mixins.json"
+        }
+
+        register('client') {
+            systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        register('server') {
+            args '--nogui'
+        }
+    }
+}
+
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+    mavenCentral()
+}
+
+dependencies {
+    // Implementation — the official Forge distribution for the pinned MC version.
+    implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
+
+    // Needed to generate the Mixin annotation-processor metadata (refmap) at compile time.
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    // Use the UTF-8 charset for Java compilation
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('jar', Jar) {
+    manifest {
+        // Register the Mixin config in the manifest so it is loaded at runtime.
+        attributes['MixinConfigs'] = "${mod_id}.mixins.json"
+    }
+}
