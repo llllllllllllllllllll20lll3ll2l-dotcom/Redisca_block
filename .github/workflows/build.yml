@@ -1,0 +1,42 @@
+# Build the Redisca Block mod in the cloud (GitHub Actions).
+#
+# Triggers on every push to any branch and on manual dispatch. On success the
+# finished jar is uploaded as a workflow artifact named "redisca_block" —
+# download it from the workflow run page (Actions -> build -> artifacts).
+name: Build Redisca Block
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (Java 25, Forge 66.x)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build the mod
+        run: ./gradlew build --no-daemon
+
+      - name: Upload built jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: redisca_block
+          path: build/libs/*.jar
+          if-no-files-found: error

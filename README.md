@@ -69,6 +69,18 @@
 
 Готовый мод окажется в `build/libs/redisca_block-1.0.0.jar`.
 
+### Автоматическая сборка в GitHub (без установки ничего)
+
+В репозитории есть workflow `.github/workflows/build.yml`: при каждом пуше и
+при ручном запуске (`workflow_dispatch`) GitHub собирает мод на своём сервере
+(Java 25 + ForgeGradle). Готовый jar загружается как artifact **`redisca_block`**
+на странице workflow-run:
+
+> Actions → «Build Redisca Block» → выбери прогон → раздел Artifacts →
+> распакуй zip → jar внутри.
+
+Это самый простой способ получить готовый мод, если сборка локально невозможна.
+
 Чтобы увидеть смену версий Forge (например, если в `gradle.properties` будет
 старое значение), отредактируйте `forge_version`. Минимум для Forge 26.3 — `66.0.0`.
 
@@ -88,9 +100,52 @@
 
 ## Установка
 
-1. Скачайте `maven`-сборку Minecraft 26.3 + Forge 66.1.9 (или новый).
-2. Положите собранный `redisca_block-1.0.0.jar` в папку `mods/`.
-3. Запустите игру. Блоки стартуют на полную высоту.
+### Одной командой (Windows)
+
+Скрипт `install.cmd` соберёт мод и положит jar в твою папку `.minecraft\mods`:
+
+```bat
+:: PowerShell
+.\install.ps1
+
+:: CMD
+.\install.cmd
+```
+
+Варианты:
+
+```bat
+:: PowerShell — установка в произвольную папку
+.\install.ps1 -ModsDir "D:\Games\mods"
+
+:: CMD — на машине где jar уже собран, только установить
+.\install.cmd /NoBuild
+
+:: CMD — установка в произвольную папку
+.\install.cmd "D:\Games\mods"
+```
+
+Windows, установка без сборки вручную:
+
+```bat
+:: PowerShell
+Copy-Item -Force .\build\libs\redisca_block-1.0.0.jar "$env:APPDATA\.minecraft\mods\"
+
+:: CMD
+mkdir "%APPDATA%\.minecraft\mods" 2>nul
+copy /Y "%cd%\build\libs\redisca_block-1.0.0.jar" "%APPDATA%\.minecraft\mods\"
+```
+
+### Пошагово (если скрипты нативные не нужны)
+
+1. Соберите мод: `.\gradlew.bat build`
+2. Скачайте Minecraft 26.3 + Forge 66.1.x.
+3. Положите собранный `redisca_block-1.0.0.jar` в папку `mods/`.
+4. Запустите игру. Блоки стартуют на полную высоту.
+
+> ⚠️ Требования: Java 25+ и доступ к
+> `services.gradle.org`, `maven.minecraftforge.net`, `repo.maven.apache.org`,
+> `plugins.gradle.org` (всё нужно для скачивания Gradle, Minecraft и Forge).
 
 ## Как это устроено
 
@@ -125,6 +180,7 @@ Redisca_block/
 ├── gradle.properties                 # minecraft_version / forge_version / mod_id
 ├── gradlew / gradlew.bat             # Gradle wrapper (Gradle 9.3.1)
 ├── gradle/wrapper/
+├── install.ps1 / install.cmd         # собрать мод + установить jar в .minecraft\mods
 ├── src/main/java/ru/redisca/block/
 │   ├── RediscaBlock.java             # @Mod — точка входа
 │   ├── Limits.java                   # MIN_Y и HEIGHT (значения, выносимые для настройки)
