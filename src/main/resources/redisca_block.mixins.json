@@ -1,0 +1,11 @@
+{
+    "required": true,
+    "package": "ru.redisca.block.mixins",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "DimensionTypeMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
