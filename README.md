@@ -13,6 +13,39 @@
 
 ---
 
+## ⚡ Установка с нуля (Windows)
+
+Нужны: `git` (или `jar` из CI) и **Java 25+**.
+
+```cmd
+cd C:\Users\ВАШИ_ИМЕНА
+git clone https://github.com/llllllllllllllllllll20lll3ll2l-dotcom/Redisca_block.git
+cd Redisca_block
+.\install.cmd
+```
+
+Или, если клон уже сделан:
+
+```cmd
+cd C:\Users\ВАШИ_ИМЕНА\Redisca_block
+.\install.cmd
+```
+
+PowerShell (иной подход):
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\ВАШИ_ИМЕНА\Redisca_block\install.ps1"
+```
+
+> ⚠️ Откройте **терминал в папке репозитория**. Если запустить `.\install.cmd`
+> из `C:\Users\ВАШИ_ИМЕНА` — получите ошибку
+> `'.\install.cmd' not recognized`.
+
+Скрипт соберёт мод (это первый запуск: скачает Gradle + Minecraft + Forge,
+~10-20 минут) и скопирует jar в `%APPDATA%\.minecraft\mods\`.
+Требуется интернет и Java 25+.
+
+---
 ## Что делает мод
 
 В Minecraft 26.3 вся вертикальная модель игры (мин. и макс. высота блока, число
@@ -56,7 +89,7 @@
 
 - **Java 25** (26.3 требует его минимум; сборка мода тоже использует Toolchain 25).
 - **Minecraft 26.3**
-- **Forge 66.1.x** (последний на 26.3 на момент написания — `66.1.9`)
+- **Forge 66.1.x** (для 26.3 в `gradle.properties` — `66.1.8`)
 - **Gradle 9.x** — установится автоматически через встроенный wrapper
   (`./gradlew`); требуется доступ к `services.gradle.org`,
   `maven.minecraftforge.net` и `repo.maven.apache.org`.
@@ -102,6 +135,7 @@
 
 ### Одной командой (Windows)
 
+> ⚠️ Команды здесь запускаются **только из папки репозитория** (то есть из `Redisca_block`), где лежат `install.cmd` и `install.ps1`. В домашней папке `C:\Users\<имя>` запуск даст ошибку `not recognized as...`.
 Скрипт `install.cmd` соберёт мод и положит jar в твою папку `.minecraft\mods`:
 
 ```bat
