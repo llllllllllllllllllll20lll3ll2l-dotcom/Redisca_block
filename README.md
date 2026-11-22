@@ -46,6 +46,87 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\ВАШИ_ИМЕН�
 Требуется интернет и Java 25+.
 
 ---
+## 📋 Установка пошагово
+
+### Шаг 0 — Подготовка
+
+1. Установите **Java 25+** (Temurin/Adoptium): https://adoptium.net/
+   Проверить: откройте CMD и введите:
+   ```bat
+   java -version
+   ```
+   Должна быть строка `openjdk version "25.x.x"`. Если ничего не вывелось — установите Java и один раз перезапустите Терминал.
+2. Скачайте архив с репозиторием или склонируйте клон:
+   - ZIP: на https://github.com/llllllllllllllllllll20lll3ll2l-dotcom/Redisca_block нажмите зелёную кнопку **Code → Download ZIP**, распакуйте в папку.
+   - Или через git: `git clone https://github.com/llllllllllllllllllll20lll3ll2l-dotcom/Redisca_block.git`
+3. (Рекомендуется) **Не храните папку репозитория внутри OneDrive/Desktop**. OneDrive блокирует файлы во время сборки. Перенесите папку, например:
+   ```bat
+   move "C:\Users\ВАШ_ИМЯ\OneDrive\Desktop\Redisca_block-arena-4b9ccfcb-redisca-block" "C:\Redisca_block"
+   ```
+   > Если папка уже скопирована в обычное место — можете не переносить.
+
+### Шаг 1 — Открыть терминал в папке репозитория
+
+Самый простой способ — зайти в папку `Redisca_block` в Проводнике, **правой кнопкой** → **Open in Terminal** (или **Open PowerShell window here**).
+
+В открывшемся терминале проверьте:
+```powershell
+   ls
+```
+Должны быть видны `install.cmd`, `install.ps1`, `gradlew.bat`, `build.gradle`.
+
+### Шаг 2 — Сборка мода
+
+В этом же терминале выполните:
+```bat
+.\install.cmd
+```
+
+Что произойдёт:
+- Gradle 9.3.1 скачается автоматически (~120 МБ, первая сборка).
+- Скачаются Minecraft и Forge (~150 МБ, первая сборка).
+- Мод скомпилируется в `build\libs\redisca_block-1.0.0.jar`.
+
+Это **первая сборка** — ~10-20 минут в зависимости от скорости интернета. Если терминал показывает ошибки — см. раздел «Шаг 6 — Если сборка не прошла».
+
+### Шаг 3 — jar в папке mods
+
+Скрипт сам скопирует jar в `%APPDATA%\.minecraft\mods\` (по умолчанию). Проверьте:
+```powershell
+   Get-ChildItem "$env:APPDATA\.minecraft\mods\redisca_block-1.0.0.jar"
+```
+Если файл есть — мод установлен. Если нужно другое место — `.\install.cmd "D:\Games\mods"`.
+
+### Шаг 4 — Установка Forge 26.3 для клиента
+
+1. Скачайте Forge 26.3 с https://files.minecraftforge.net/net/minecraftforge/forge/ (например 66.1.8).
+2. Запустите `forge-26.3-66.1.8-installer.jar`.
+3. Выберите профиль `Minecraft 26.3 forge` в лаунчере Minecraft.
+4. Запустите игру.
+
+> Мод ставит блоки на любую высоту внутри ванильного лимита (Y = -2032 .. 2031).
+
+### Шаг 5 — (Опционально) Сервер вместо клиента
+
+Если нужен сервер (Forge server):
+1. Скачайте `forge-26.3-66.1.8-installer.jar`.
+2. Откройте папку с сервером и выполните:
+   ```bat
+   java -jar forge-26.3-66.1.8-installer.jar --installServer
+   ```
+3. После установки скопируйте `redisca_block-1.0.0.jar` в `mods\` рядом с `run.bat`.
+4. Запустите сервер командой `java -jar forge-26.3-66.1.8-server.jar nogui`.
+
+### Шаг 6 — Если сборка не прошла
+
+Скопируйте **весь текст** вывода терминала (Ctrl+A, Enter, Ctrl+V) и отправьте мне — разберу по шагам. Частые причины:
+- Нет Java 25 в PATH → переустановите Java и запустите терминал заново.
+- OneDrive блокирует файлы → перенесите папку из OneDrive.
+- Первая сборка: сеть или gradle.properties → проверьте, что есть интернет и `forge_version` валидна.
+- Если `java -version` в терминале что-то выводит, но `install.cmd` висит 20+ минут — скорее всего нет интернета в этой сети.
+
+---
+
 ## Что делает мод
 
 В Minecraft 26.3 вся вертикальная модель игры (мин. и макс. высота блока, число
