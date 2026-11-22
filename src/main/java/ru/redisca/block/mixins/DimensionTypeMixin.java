@@ -26,16 +26,22 @@ import ru.redisca.block.Limits;
  * <p>{@code logicalHeight()} is deliberately <em>not</em> modified: it is the separate
  * gameplay limit of "maximum height to which chorus fruits and nether portals can bring
  * players", not a build limit, and removing it would change gameplay beyond the request.</p>
+ *
+ * <p>Minecraft 26.1 and later ship unobfuscated: there is no obfuscated build with SRG
+ * names to remap to, so every inject/annotation must say {@code remap = false} — the
+ * written method name ({@code "minY"}) is exactly the name the game and the mixin
+ * processor use at runtime. Forget this and the Mixin annotation processor fails with
+ * {@code Unable to locate obfuscation mapping for @Inject target minY}.</p>
  */
 @Mixin(DimensionType.class)
 public abstract class DimensionTypeMixin {
 
-    @Inject(method = "minY", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "minY", at = @At("HEAD"), cancellable = true, remap = false)
     private void rediscaBlock$minY(CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(Limits.MIN_Y);
     }
 
-    @Inject(method = "height", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "height", at = @At("HEAD"), cancellable = true, remap = false)
     private void rediscaBlock$height(CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(Limits.HEIGHT);
     }

@@ -1,7 +1,8 @@
 {
     "required": true,
+    "minVersion": "0.8",
     "package": "ru.redisca.block.mixins",
-    "compatibilityLevel": "JAVA_21",
+    "compatibilityLevel": "JAVA_25",
     "mixins": [
         "DimensionTypeMixin"
     ],
